@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etchy</title>
+</head>
+<body>
+    <div class="container"></div>
+    
+</body>
+<script>
+        let gridNo = 16;
+        let inputCount = 0;
+        
+        const button = document.createElement('button');
+        button.textContent = 'Reset Grid';
+        button.style.height = '20px';
+        button.style.width = '100px';
+        button.style.margin = '5px';
+        button.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.style.width = '200px';
+            input.placeholder = 'Enter grid number < 100';
+            document.body.prepend(input);
+            input.addEventListener('keydown', (event) => {
+                ++inputCount;
+                if (event.key === 'Enter') {
+                    const newGrid = Number(input.value);
+                    if (newGrid <= 100) {
+                        gridNo = newGrid;
+                        input.remove();
+                        createGrid();
+                        
+                        
+                    };
+                };
+            })
+        });
+            
+        
+        document.body.prepend(button);
+        document.body.style.textAlign = 'center';
+
+        function createGrid() {
+            const masterDiv = document.querySelector('.container');
+            masterDiv.innerHTML = '';
+            masterDiv.style.backgroundColor = 'lightyellow';
+            masterDiv.style.alignItems = 'center';
+            masterDiv.style.justifyContent = 'center';
+            masterDiv.style.height = '100vh';
+            
+            for (let a = 1; a <= gridNo; a++) {
+                const column = document.createElement('div');
+                //column.style.backgroundColor = 'aqua';
+                column.classList.add('column');
+                column.style.display = 'flex';
+                column.style.justifyContent = 'center';
+                masterDiv.appendChild(column);
+            }
+
+            const containerColumn = document.querySelectorAll('.column');
+            const randomColor = () => {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                return `rgb(${r}, ${g}, ${b})`;
+            };
+            let random = randomColor();
+
+            if (inputCount > 0) {
+                random = randomColor();
+            }
+            
+            containerColumn.forEach(div => {
+                for (let c = 1; c <= gridNo; c++) {
+                const rows = document.createElement('div');
+                //rows.textContent = `${c}`;
+                rows.classList.add('rows');
+                rows.style.color = 'red';
+                rows.style.width = `${100 / gridNo}vh`;
+                rows.style.height = `${100 / gridNo}vh`;
+                if (inputCount > 0) {
+                    rows.style.backgroundColor = random;
+                } else {
+                    rows.style.backgroundColor = 'lightgreen';
+                }
+                
+                rows.addEventListener('mouseover', () => {
+                    rows.style.backgroundColor = randomColor();
+                });
+                rows.addEventListener('mouseout', () => {
+                    setTimeout(() => {
+                        rows.style.backgroundColor = 'lightyellow';}, 400);
+
+                    setTimeout(() => {
+                        rows.style.backgroundColor = random;}, 2000);
+                    })
+
+                
+                
+                rows.style.border = '1px solid black';
+                div.appendChild(rows);
+                }
+            });
+        }
+    createGrid();
+
+
+
+        
+        
+</script>
+
+</html>
